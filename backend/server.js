@@ -3,7 +3,13 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 
 const app = express();
-app.use(cors());
+
+app.use(cors({
+  origin: ['http://localhost:3000', 'https://iot-monitor-one.vercel.app/'], 
+  methods: ['GET', 'POST', 'PUT', 'DELETE'], 
+  credentials: true 
+}));
+
 app.use(express.json());
 
 mongoose.connect("mongodb+srv://rashanishath:1jtE4cE9cBX2B6LC@cluster0.y499y.mongodb.net/iot", {
