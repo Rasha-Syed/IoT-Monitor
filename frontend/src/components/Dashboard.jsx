@@ -25,7 +25,7 @@ const Dashboard = () => {
 
   const fetchAvailableDevices = async () => {
     try {
-      const res = await axios.get("https://iot-monitor.onrender.com/api/sensors/available");
+      const res = await axios.get("https://iot-monitor.onrender.com//api/sensors/available");
       setAvailableDevices(res.data.map(d => d.deviceId));
       if (res.data.length > 0) setDeviceId(res.data[0].deviceId);
     } catch (err) {
