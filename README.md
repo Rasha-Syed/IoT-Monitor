@@ -32,6 +32,6 @@ A full-stack web application that simulates and monitors multiple IoT devices in
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/Rasha-Syed/IoT-Device-Monitor.git
-cd IoT-Device-Monitor
+git clone https://github.com/Rasha-Syed/IoT-Monitor.git
+cd IoT-Monitor
 
