@@ -5,7 +5,7 @@ const cors = require("cors");
 const app = express();
 
 app.use(cors({
-  origin: ['http://localhost:3000', 'https://iot-monitor-one.vercel.app/'], 
+  origin: ['http://localhost:3000', 'https://io-t-monitor.vercel.app/'], 
   methods: ['GET', 'POST', 'PUT', 'DELETE'], 
   credentials: true 
 }));
