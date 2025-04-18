@@ -10,7 +10,7 @@ setInterval(() => {
       humidity: Math.floor(Math.random() * 20) + 40,
     };
 
-    axios.post("http://localhost:5000/api/sensors", data)
+    axios.post("https://iot-monitor.onrender.com/api/sensors", data)
       .then(() => console.log(`Data sent from ${deviceId}`))
       .catch((err) => console.error("Error:", err.message));
   });
