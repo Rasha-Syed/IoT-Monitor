@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Line } from "react-chartjs-2";
 import 'chart.js/auto';
+import SimulatorControls from "./SimulatorControls";
 
 const Dashboard = () => {
   const [sensorData, setSensorData] = useState([]);
@@ -76,7 +77,8 @@ const Dashboard = () => {
   return (
     <div style={{ padding: "20px" }}>
       <h2>IoT Device Dashboard</h2>
-
+      <SimulatorControls />
+      
       {/* Dropdown Row */}
       <div style={{ display: "flex", gap: "30px", marginBottom: "20px" }}>
         <div>
