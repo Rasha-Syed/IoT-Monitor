@@ -1,26 +1,53 @@
-require('dotenv').config();
-const axios = require("axios");
+const express = require("express");
+const router = express.Router();
+const path = require("path");
+const { exec } = require("child_process");
 
-const sensors = ["Sensor_01", "Sensor_02", "Sensor_03"];
-const apiUrl = process.env.API_BASE_URL || "http://localhost:5000";
+let simulatorProcess = null;
+let simulatorIsActive = false;
 
-setInterval(async () => {
-  try {
-    const { data } = await axios.get(`${apiUrl}/api/simulator/status`);
-    if (!data.active) return;  // Only send data if simulator is active
+// ✅ Get simulator status
+router.get("/status", (req, res) => {
+  res.json({ active: simulatorIsActive });
+});
 
-    sensors.forEach((deviceId) => {
-      const payload = {
-        deviceId,
-        temperature: Math.floor(Math.random() * 10) + 25,
-        humidity: Math.floor(Math.random() * 20) + 40,
-      };
-
-      axios.post(`${apiUrl}/api/sensors`, payload)
-        .then(() => console.log(`Data sent from ${deviceId}`))
-        .catch(err => console.error("Data send error:", err.message));
-    });
-  } catch (err) {
-    console.error("Simulator error:", err.message);
+// ✅ Start simulator
+router.post("/start", (req, res) => {
+  if (simulatorIsActive) {
+    return res.status(400).send("Simulator is already running.");
   }
-}, 5000);
+
+  const simulatorPath = path.join(__dirname, "..", "simulator.js");
+
+  simulatorProcess = exec(`node ${simulatorPath}`, (error, stdout, stderr) => {
+    if (error) {
+      console.error(`Error starting simulator: ${error.message}`);
+      return;
+    }
+    if (stderr) {
+      console.error(`Simulator stderr: ${stderr}`);
+    }
+    console.log(`Simulator output: ${stdout}`);
+  });
+
+  simulatorIsActive = true;
+  console.log("Simulator started");
+  res.send("Simulator started");
+});
+
+// ✅ Stop simulator
+router.post("/stop", (req, res) => {
+  if (!simulatorIsActive) {
+    return res.status(400).send("Simulator is not running.");
+  }
+
+  if (simulatorProcess) {
+    simulatorProcess.kill("SIGINT");
+    console.log("Simulator process killed");
+  }
+
+  simulatorIsActive = false;
+  res.send("Simulator stopped");
+});
+
+module.exports = router;
