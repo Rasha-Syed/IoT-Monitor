@@ -1,19 +1,17 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-const backendUrl = "https://iot-monitor.onrender.com";
+const backendUrl = "https://iot-monitor.onrender.com"; // This should be your live backend URL
 
-const SimulatorControls = () => {
-  const [isRunning, setIsRunning] = useState(false);
+const toggleSimulator = async (action) => {
+  try {
+    await axios.post(`${backendUrl}/api/simulator/${action}`);
+    fetchStatus(); // After starting or stopping, check the status
+  } catch (err) {
+    console.error(`Failed to ${action} simulator:`, err.message);
+  }
+};
 
-  const fetchStatus = async () => {
-    try {
-      const res = await axios.get(`${backendUrl}/api/simulator/status`);
-      setIsRunning(res.data.active);
-    } catch (err) {
-      console.error("Failed to fetch simulator status:", err.message);
-    }
-  };
 
   const toggleSimulator = async (action) => {
     try {
