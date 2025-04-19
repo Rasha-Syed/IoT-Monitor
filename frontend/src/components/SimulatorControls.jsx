@@ -15,15 +15,7 @@ const toggleSimulator = async (action) => {
 };
 
 
-  const toggleSimulator = async (action) => {
-    try {
-      await axios.post(`${backendUrl}/api/simulator/${action}`);
-      fetchStatus();
-    } catch (err) {
-      console.error(`Failed to ${action} simulator:`, err.message);
-    }
-  };
-
+  
   useEffect(() => {
     fetchStatus();
   }, []);
