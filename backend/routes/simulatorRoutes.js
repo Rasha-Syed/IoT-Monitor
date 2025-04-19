@@ -16,7 +16,7 @@ router.post("/start", (req, res) => {
     return res.status(400).send("Simulator is already running.");
   }
 
-
+  console.log("Starting the simulator...");
   simulatorProcess = exec("node simulator.js", (error, stdout, stderr) => {
     if (error) {
       console.error(`Error starting simulator: ${error.message}`);
