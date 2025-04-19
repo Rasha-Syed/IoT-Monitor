@@ -5,18 +5,17 @@ const { exec, execSync } = require("child_process");
 let simulatorProcess = null;  
 let simulatorIsActive = false; 
 
-
+// Check simulator status
 router.get("/status", (req, res) => {
   res.json({ active: simulatorIsActive });
 });
 
-
+// Start the simulator
 router.post("/start", (req, res) => {
   if (simulatorIsActive) {
     return res.status(400).send("Simulator is already running.");
   }
 
-  console.log("Starting the simulator...");
   simulatorProcess = exec("node simulator.js", (error, stdout, stderr) => {
     if (error) {
       console.error(`Error starting simulator: ${error.message}`);
@@ -34,13 +33,12 @@ router.post("/start", (req, res) => {
   res.send("Simulator started");
 });
 
-// Route to stop the simulator
+// Stop the simulator
 router.post("/stop", (req, res) => {
   if (!simulatorIsActive) {
     return res.status(400).send("Simulator is not running.");
   }
 
-  // Kill the simulator process
   if (simulatorProcess) {
     simulatorProcess.kill("SIGINT");
     console.log("Simulator stopped");
@@ -51,4 +49,3 @@ router.post("/stop", (req, res) => {
 });
 
 module.exports = router;
-
