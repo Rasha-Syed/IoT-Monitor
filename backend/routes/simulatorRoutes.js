@@ -2,6 +2,8 @@ const express = require("express");
 const router = express.Router();
 const { exec, execSync } = require("child_process");
 
+ const path = require("path");
+
 let simulatorProcess = null;  
 let simulatorIsActive = false; 
 
@@ -16,7 +18,9 @@ router.post("/start", (req, res) => {
     return res.status(400).send("Simulator is already running.");
   }
 
-  simulatorProcess = exec("node simulator.js", (error, stdout, stderr) => {
+const simulatorPath = path.join(__dirname, "..", "simulator.js");
+
+simulatorProcess = exec(`node ${simulatorPath}`, (error, stdout, stderr) => {
     if (error) {
       console.error(`Error starting simulator: ${error.message}`);
       return;
