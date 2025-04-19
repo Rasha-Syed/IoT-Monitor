@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-const backendUrl = process.env.REACT_APP_BASE_URL || "http://localhost:5000";
+const backendUrl = "https://iot-monitor.onrender.com";
 
 const SimulatorControls = () => {
   const [isRunning, setIsRunning] = useState(false);
