@@ -1,21 +1,34 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-const backendUrl = "https://iot-monitor.onrender.com"; // This should be your live backend URL
+const backendUrl = "https://iot-monitor.onrender.com"; // Your live backend URL
 
-const toggleSimulator = async (action) => {
-  try {
-    await axios.post(`${backendUrl}/api/simulator/${action}`);
-    fetchStatus(); // After starting or stopping, check the status
-    console.log(`Sent request to ${action} simulator`);
+const SimulatorControls = () => {
+  // Track whether the simulator is running
+  const [isRunning, setIsRunning] = useState(false);
 
-  } catch (err) {
-    console.error(`Failed to ${action} simulator:`, err.message);
-  }
-};
+  // Fetch simulator status from the backend
+  const fetchStatus = async () => {
+    try {
+      const res = await axios.get(`${backendUrl}/api/simulator/status`);
+      setIsRunning(res.data.active); // Update the state based on simulator status
+    } catch (err) {
+      console.error("Failed to fetch simulator status:", err.message);
+    }
+  };
 
+  // Toggle the simulator (start or stop)
+  const toggleSimulator = async (action) => {
+    try {
+      await axios.post(`${backendUrl}/api/simulator/${action}`);
+      console.log(`Sent request to ${action} simulator`);
+      fetchStatus(); // After starting/stopping, update the status
+    } catch (err) {
+      console.error(`Failed to ${action} simulator:`, err.message);
+    }
+  };
 
-  
+  // Get initial status when the component mounts
   useEffect(() => {
     fetchStatus();
   }, []);
@@ -26,7 +39,11 @@ const toggleSimulator = async (action) => {
       <button onClick={() => toggleSimulator("start")} disabled={isRunning}>
         ▶️ Start Simulator
       </button>
-      <button onClick={() => toggleSimulator("stop")} disabled={!isRunning} style={{ marginLeft: "10px" }}>
+      <button
+        onClick={() => toggleSimulator("stop")}
+        disabled={!isRunning}
+        style={{ marginLeft: "10px" }}
+      >
         ⏹️ Stop Simulator
       </button>
     </div>
