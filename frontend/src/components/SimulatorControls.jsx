@@ -7,6 +7,8 @@ const toggleSimulator = async (action) => {
   try {
     await axios.post(`${backendUrl}/api/simulator/${action}`);
     fetchStatus(); // After starting or stopping, check the status
+    console.log(`Sent request to ${action} simulator`);
+
   } catch (err) {
     console.error(`Failed to ${action} simulator:`, err.message);
   }
